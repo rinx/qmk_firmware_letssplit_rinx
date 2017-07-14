@@ -101,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 
-/* Adjust (Lower + Raise)
+/* Adjust
  * ,-----------------------------------------. ,-----------------------------------------.
  * |      | Reset|      |      |      |      | |      |      |      |      |      |  Del |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
@@ -158,11 +158,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LOWER:
       if (record->event.pressed) {
         layer_on(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-        rgblight_setrgb(0x00,0xff,0x00);
+        rgblight_setrgb(0x00,0x00,0xff);
       } else {
         layer_off(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
         rgblight_mode(0);
       }
       return false;
@@ -170,11 +168,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case RAISE:
       if (record->event.pressed) {
         layer_on(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
         rgblight_setrgb(0xff,0x00,0x00);
       } else {
         layer_off(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
         rgblight_mode(0);
       }
       return false;
@@ -192,7 +188,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case ADJUST:
       if (record->event.pressed) {
         layer_on(_ADJUST);
-        rgblight_setrgb(0x00,0x00,0xff);
+        rgblight_setrgb(0xff,0xff,0x00);
       } else {
         layer_off(_ADJUST);
         rgblight_mode(0);
