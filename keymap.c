@@ -17,17 +17,17 @@ extern keymap_config_t keymap_config;
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
 
-#define NEXTWKSP ACTION_MODS_KEY(MOD_LCTL, KC_RGHT)
-#define PREVWKSP ACTION_MODS_KEY(MOD_LCTL, KC_LEFT)
+#define NEXTWKS ACTION_MODS_KEY(MOD_LCTL, KC_RGHT)
+#define PREVWKS ACTION_MODS_KEY(MOD_LCTL, KC_LEFT)
 #define NEXTTAB ACTION_MODS_KEY(MOD_LGUI, KC_RCBR)
 #define PREVTAB ACTION_MODS_KEY(MOD_LGUI, KC_LCBR)
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
-  LOWER = LT(_LOWER, PREVWKSP),
-  RAISE = LT(_RAISE, NEXTWKSP),
-  NUMPAD = LT(_NUMPAD, NEXTTAB),
-  ADJUST = LT(_ADJUST, PREVTAB),
+  LOWER,
+  RAISE,
+  NUMPAD,
+  ADJUST
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -88,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Numpad
  * ,-----------------------------------------. ,-----------------------------------------.
- * |      |      |   7  |   8  |   9  |      | |      |      |  Up  |      |      |      |
+ * |      |      |   7  |   8  |   9  |PREVTB| |NEXTTB|      |  Up  |      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |   4  |   5  |   6  |      | |      | Left | Down |Right |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
@@ -98,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_NUMPAD] =  KEYMAP( \
-  _______, _______, KC_7,    KC_8,    KC_9,    _______, _______, _______, KC_UP,   _______, _______, _______, \
+  _______, _______, KC_7,    KC_8,    KC_9,    PREVTAB, NEXTTAB, _______, KC_UP,   _______, _______, _______, \
   _______, _______, KC_4,    KC_5,    KC_6,    _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, \
   _______, _______, KC_1,    KC_2,    KC_3,    _______, _______, _______, _______, _______, _______, _______, \
   _______, _______, KC_0,    KC_COMM, KC_DOT,  _______, _______, _______, _______, _______, _______, _______ \
@@ -107,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Adjust
  * ,-----------------------------------------. ,-----------------------------------------.
- * |RGB on|RGBmod|      | MsUp |      |      | |      |      | MsUp |      |RGB v-|RGB v+|
+ * |RGB on|RGBmod|      | MsUp |      |PREVWK| |NEXTWK|      | MsUp |      |RGB v-|RGB v+|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |RGB h-|RGB h+|MsLeft|MsDown|MsRght|      | |      |MsLeft|MsDown|MsRght|RGB s-|RGB s+|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
@@ -117,7 +117,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_ADJUST] =  KEYMAP( \
-  RGB_TOG, RGB_MOD, _______, KC_MS_U, _______, _______, _______, _______, KC_MS_U, _______, RGB_VAD, RGB_VAI, \
+  RGB_TOG, RGB_MOD, _______, KC_MS_U, _______, PREVWKS, NEXTWKS, _______, KC_MS_U, _______, RGB_VAD, RGB_VAI, \
   RGB_HUD, RGB_HUI, KC_MS_L, KC_MS_D, KC_MS_R, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R, RGB_SAD, RGB_SAI, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
   _______, _______, _______, _______, KC_BTN1, KC_BTN2, KC_BTN1, KC_BTN2, _______, _______, _______, _______ \
@@ -152,6 +152,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
     return MACRO_NONE;
 };
 
+void matrix_init_user(void) {
+    rgblight_mode(13);
+};
+
 void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
   default_layer_set(default_layer);
@@ -162,47 +166,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case QWERTY:
       if (record->event.pressed) {
         persistent_default_layer_set(1UL<<_QWERTY);
-        rgblight_mode(1);
+        rgblight_mode(13);
       }
       return false;
       break;
     case LOWER:
       if (record->event.pressed) {
         layer_on(_LOWER);
-        rgblight_setrgb(0x00,0x00,0xff);
+        rgblight_mode(31);
       } else {
         layer_off(_LOWER);
-        rgblight_mode(0);
+        rgblight_mode(13);
       }
       return false;
       break;
     case RAISE:
       if (record->event.pressed) {
         layer_on(_RAISE);
-        rgblight_setrgb(0xff,0x00,0x00);
+        rgblight_mode(32);
       } else {
         layer_off(_RAISE);
-        rgblight_mode(0);
+        rgblight_mode(13);
       }
       return false;
       break;
     case NUMPAD:
       if (record->event.pressed) {
         layer_on(_NUMPAD);
+        rgblight_mode(0);
         rgblight_setrgb(0x00,0xff,0xff);
       } else {
         layer_off(_NUMPAD);
-        rgblight_mode(0);
+        rgblight_mode(13);
       }
       return false;
       break;
     case ADJUST:
       if (record->event.pressed) {
         layer_on(_ADJUST);
+        rgblight_mode(0);
         rgblight_setrgb(0xff,0xff,0x00);
       } else {
         layer_off(_ADJUST);
-        rgblight_mode(0);
+        rgblight_mode(13);
       }
       return false;
       break;
