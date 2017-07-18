@@ -153,7 +153,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 };
 
 void matrix_init_user(void) {
-    rgblight_mode(13);
+    rgblight_mode(6);
 };
 
 void persistent_default_layer_set(uint16_t default_layer) {
@@ -166,7 +166,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case QWERTY:
       if (record->event.pressed) {
         persistent_default_layer_set(1UL<<_QWERTY);
-        rgblight_mode(13);
+        rgblight_mode(6);
       }
       return false;
       break;
@@ -176,7 +176,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         rgblight_mode(31);
       } else {
         layer_off(_LOWER);
-        rgblight_mode(13);
+        rgblight_mode(6);
       }
       return false;
       break;
@@ -186,7 +186,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         rgblight_mode(32);
       } else {
         layer_off(_RAISE);
-        rgblight_mode(13);
+        rgblight_mode(6);
       }
       return false;
       break;
@@ -197,7 +197,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         rgblight_setrgb(0x00,0xff,0xff);
       } else {
         layer_off(_NUMPAD);
-        rgblight_mode(13);
+        rgblight_mode(6);
       }
       return false;
       break;
@@ -208,7 +208,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         rgblight_setrgb(0xff,0xff,0x00);
       } else {
         layer_off(_ADJUST);
-        rgblight_mode(13);
+        rgblight_mode(6);
       }
       return false;
       break;
