@@ -22,6 +22,16 @@ extern keymap_config_t keymap_config;
 #define PREVWKS ACTION_MODS_KEY(MOD_LCTL, KC_LEFT)
 #define NEXTTAB ACTION_MODS_KEY(MOD_LGUI, KC_RCBR)
 #define PREVTAB ACTION_MODS_KEY(MOD_LGUI, KC_LCBR)
+#define WINCOPY ACTION_MODS_KEY(MOD_LCTL, KC_C)
+#define WINPASTE ACTION_MODS_KEY(MOD_LCTL, KC_V)
+#define MACCOPY ACTION_MODS_KEY(MOD_LGUI, KC_C)
+#define MACPASTE ACTION_MODS_KEY(MOD_LGUI, KC_V)
+
+// macros
+#define MAC_COPY_PASTE 0
+#define WIN_COPY_PASTE 1
+#define GIT_PULL 2
+#define GIT_PUSH 3
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -94,17 +104,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------. ,-----------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  | |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |      |      |M C/P |M COPY|MPASTE|      | |      |G PULL|      |      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |      |      |W C/P |W COPY|WPASTE|      | |      |G PUSH|      |      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |      |      | |      |      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_FUNCT] = KEYMAP( \
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, _______, \
+  _______, M(GIT_PULL), _______, _______, _______, _______, \
+  _______, _______, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, _______, \
+  _______, M(GIT_PUSH), _______, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 
@@ -156,19 +168,38 @@ const uint16_t PROGMEM fn_actions[] = {
     [4] = ACTION_LAYER_TAP_TOGGLE(_ADJUST)  // FN3 - Momentary Layer 4
 };
 
+static uint16_t start;
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
     switch(id) {
-        case 0:
+        case MAC_COPY_PASTE:
             if (record->event.pressed) {
-                SEND_STRING ("git pull");
-                return MACRO( T(ENT), END );
+                start = timer_read();
+            } else {
+                if (timer_elapsed(start) >= 150)
+                    return MACRO(D(LGUI), T(C), U(LGUI), END);
+                else
+                    return MACRO(D(LGUI), T(V), U(LGUI), END);
             }
             break;
-        case 1:
+        case WIN_COPY_PASTE:
+            if (record->event.pressed) {
+                start = timer_read();
+            } else {
+                if (timer_elapsed(start) >= 150)
+                    return MACRO(D(LCTL), T(C), U(LCTL), END);
+                else
+                    return MACRO(D(LCTL), T(V), U(LCTL), END);
+            }
+            break;
+        case GIT_PULL:
+            if (record->event.pressed) {
+                SEND_STRING ("git pull");
+            }
+            break;
+        case GIT_PUSH:
             if (record->event.pressed) {
                 SEND_STRING ("git push");
-                return MACRO( T(ENT), END );
             }
             break;
     }
