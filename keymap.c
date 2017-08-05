@@ -158,6 +158,32 @@ void matrix_init_user(void) {
     rgblight_mode(6);
 };
 
+void matrix_scan_user(void) {
+
+    uint8_t layer = biton32(layer_state);
+
+    switch (layer) {
+        case _LOWER:
+            rgblight_mode(31);
+            break;
+        case _RAISE:
+            rgblight_mode(32);
+            break;
+        case _NUMPAD:
+            rgblight_mode(0);
+            rgblight_setrgb(0x00,0xff,0xff);
+            break;
+        case _ADJUST:
+            rgblight_mode(0);
+            rgblight_setrgb(0xff,0xff,0x00);
+            break;
+        default:
+            rgblight_mode(6);
+            break;
+    }
+
+};
+
 void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
   default_layer_set(default_layer);
@@ -168,49 +194,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case QWERTY:
       if (record->event.pressed) {
         persistent_default_layer_set(1UL<<_QWERTY);
-        rgblight_mode(6);
       }
       return false;
       break;
     case LOWER:
       if (record->event.pressed) {
         layer_on(_LOWER);
-        rgblight_mode(31);
       } else {
         layer_off(_LOWER);
-        rgblight_mode(6);
       }
       return false;
       break;
     case RAISE:
       if (record->event.pressed) {
         layer_on(_RAISE);
-        rgblight_mode(32);
       } else {
         layer_off(_RAISE);
-        rgblight_mode(6);
       }
       return false;
       break;
     case NUMPAD:
       if (record->event.pressed) {
         layer_on(_NUMPAD);
-        rgblight_mode(0);
-        rgblight_setrgb(0x00,0xff,0xff);
       } else {
         layer_off(_NUMPAD);
-        rgblight_mode(6);
       }
       return false;
       break;
     case ADJUST:
       if (record->event.pressed) {
         layer_on(_ADJUST);
-        rgblight_mode(0);
-        rgblight_setrgb(0xff,0xff,0x00);
       } else {
         layer_off(_ADJUST);
-        rgblight_mode(6);
       }
       return false;
       break;
