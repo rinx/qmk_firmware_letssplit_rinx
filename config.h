@@ -58,3 +58,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef MOUSEKEY_DELAY
 #define MOUSEKEY_DELAY 0
 
+#undef TAPPING_TERM
+#define TAPPING_TERM 130
+
