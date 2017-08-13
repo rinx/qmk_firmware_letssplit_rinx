@@ -13,7 +13,7 @@ extern keymap_config_t keymap_config;
 #define _RAISE 2
 #define _FUNCT 3
 #define _NUMPAD 4
-#define _ADJUST 16
+#define _ADJUST 5
 
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -27,6 +27,11 @@ extern keymap_config_t keymap_config;
 #define MACCOPY ACTION_MODS_KEY(MOD_LGUI, KC_C)
 #define MACPASTE ACTION_MODS_KEY(MOD_LGUI, KC_V)
 
+#define SPTLGHT (KC_SPC | QK_LGUI)
+#define MISSIONCTL (KC_UP | QK_LCTL)
+#define NEXTAPP (KC_TAB | QK_LGUI)
+#define PREVAPP (KC_TAB | QK_LGUI | QK_LSFT)
+
 // macros
 #define MAC_COPY_PASTE 0
 #define WIN_COPY_PASTE 1
@@ -39,8 +44,11 @@ enum custom_keycodes {
   RAISE,
   FUNCT,
   NUMPAD,
-  ADJUST
+  ADJUST,
+  DYNAMIC_MACRO_RANGE
 };
+
+#include "dynamic_macro.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -104,19 +112,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------. ,-----------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  | |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |M C/P |M COPY|MPASTE|      | |      |G PULL|      |      |      |      |
+ * |      |      |M C/P |M COPY|MPASTE|SPTLGT| |MSNCTL|G PULL|DMPLY1|DMREC1|DMSTOP|      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |W C/P |W COPY|WPASTE|      | |      |G PUSH|      |      |      |      |
+ * |      |      |W C/P |W COPY|WPASTE|PRVAPP| |NXTAPP|G PUSH|DMPLY2|DMREC2|      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |      |      | |      |      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_FUNCT] = KEYMAP( \
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
-  _______, _______, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, _______, \
-  _______, M(GIT_PULL), _______, _______, _______, _______, \
-  _______, _______, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, _______, \
-  _______, M(GIT_PUSH), _______, _______, _______, _______, \
+  _______, _______, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, SPTLGHT, \
+  MISSIONCTL, M(GIT_PULL), DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, _______, \
+  _______, _______, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, PREVAPP, \
+  NEXTAPP, M(GIT_PUSH), DYN_MACRO_PLAY2, DYN_REC_START2, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 
@@ -162,10 +170,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-    [1] = ACTION_LAYER_TAP_TOGGLE(_LOWER),  // FN1 - Momentary Layer 1
-    [2] = ACTION_LAYER_TAP_TOGGLE(_RAISE),  // FN2 - Momentary Layer 2
-    [3] = ACTION_LAYER_TAP_TOGGLE(_NUMPAD), // FN3 - Momentary Layer 3
-    [4] = ACTION_LAYER_TAP_TOGGLE(_ADJUST)  // FN3 - Momentary Layer 4
+    [1] = ACTION_LAYER_TAP_TOGGLE(_LOWER),
+    [2] = ACTION_LAYER_TAP_TOGGLE(_RAISE),
+    [3] = ACTION_LAYER_TAP_TOGGLE(_FUNCT),
+    [4] = ACTION_LAYER_TAP_TOGGLE(_NUMPAD),
+    [5] = ACTION_LAYER_TAP_TOGGLE(_ADJUST),
 };
 
 static uint16_t start;
@@ -246,6 +255,11 @@ void persistent_default_layer_set(uint16_t default_layer) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+  if (!process_record_dynamic_macro(keycode, record)) {
+    return false;
+  }
+
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
