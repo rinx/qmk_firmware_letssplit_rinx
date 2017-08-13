@@ -59,5 +59,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MOUSEKEY_DELAY 0
 
 #undef TAPPING_TERM
-#define TAPPING_TERM 130
+#define TAPPING_TERM 200
 
+#define PERMISSIVE_HOLD
