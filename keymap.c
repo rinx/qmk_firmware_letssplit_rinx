@@ -35,8 +35,6 @@ extern keymap_config_t keymap_config;
 // macros
 #define MAC_COPY_PASTE 0
 #define WIN_COPY_PASTE 1
-#define GIT_PULL 2
-#define GIT_PUSH 3
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -60,7 +58,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |Shft/[|Rais/Z|   X  |   C  |   V  |   B  | |   N  |   M  |   ,  |   .  |Lowr//|Shft/]|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |Adjust| Func | Alt  | GUI  |Space |Lwr/BS| |Ris/Es| Enter|   (  |   )  | Func |Numpad|
+ * |      |      |      |      |      | BS   | | Esc  |      |      |      |      |      |
+ * |Adjust| Func | Alt  | GUI  |Space | Lower| | Raise| Enter|   (  |   )  | Func |Numpad|
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_QWERTY] = KEYMAP( \
@@ -112,19 +111,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------. ,-----------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  | |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |M C/P |M COPY|MPASTE|SPTLGT| |MSNCTL|G PULL|DMPLY1|DMREC1|DMSTOP|      |
+ * |      |      |M C/P |M COPY|MPASTE|      | |      |      |DMPLY1|DMREC1|DMSTOP|      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |W C/P |W COPY|WPASTE|PRVAPP| |NXTAPP|G PUSH|DMPLY2|DMREC2|      |      |
+ * |      |      |W C/P |W COPY|WPASTE|      | |      |      |DMPLY2|DMREC2|      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |      |      | |      |      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_FUNCT] = KEYMAP( \
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
-  _______, _______, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, SPTLGHT, \
-  MISSIONCTL, M(GIT_PULL), DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, _______, \
-  _______, _______, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, PREVAPP, \
-  NEXTAPP, M(GIT_PUSH), DYN_MACRO_PLAY2, DYN_REC_START2, _______, _______, \
+  _______, _______, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, _______, \
+  _______, _______, DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, _______, \
+  _______, _______, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, _______, \
+  _______, _______, DYN_MACRO_PLAY2, DYN_REC_START2, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 
@@ -170,11 +169,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-    [1] = ACTION_LAYER_TAP_TOGGLE(_LOWER),
-    [2] = ACTION_LAYER_TAP_TOGGLE(_RAISE),
-    [3] = ACTION_LAYER_TAP_TOGGLE(_FUNCT),
-    [4] = ACTION_LAYER_TAP_TOGGLE(_NUMPAD),
-    [5] = ACTION_LAYER_TAP_TOGGLE(_ADJUST),
+    [1] = ACTION_LAYER_TAP_TOGGLE(_FUNCT),
+    [2] = ACTION_LAYER_TAP_TOGGLE(_NUMPAD),
+    [3] = ACTION_LAYER_TAP_TOGGLE(_ADJUST),
 };
 
 static uint16_t start;
@@ -199,16 +196,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
                     return MACRO(D(LCTL), T(C), U(LCTL), END);
                 else
                     return MACRO(D(LCTL), T(V), U(LCTL), END);
-            }
-            break;
-        case GIT_PULL:
-            if (record->event.pressed) {
-                SEND_STRING ("git pull");
-            }
-            break;
-        case GIT_PUSH:
-            if (record->event.pressed) {
-                SEND_STRING ("git push");
             }
             break;
     }
