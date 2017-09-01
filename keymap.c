@@ -182,7 +182,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             if (record->event.pressed) {
                 start = timer_read();
             } else {
-                if (timer_elapsed(start) >= 150)
+                if (timer_elapsed(start) >= TAPPING_TERM)
                     return MACRO(D(LGUI), T(C), U(LGUI), END);
                 else
                     return MACRO(D(LGUI), T(V), U(LGUI), END);
@@ -192,7 +192,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             if (record->event.pressed) {
                 start = timer_read();
             } else {
-                if (timer_elapsed(start) >= 150)
+                if (timer_elapsed(start) >= TAPPING_TERM)
                     return MACRO(D(LCTL), T(C), U(LCTL), END);
                 else
                     return MACRO(D(LCTL), T(V), U(LCTL), END);
