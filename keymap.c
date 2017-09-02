@@ -26,11 +26,10 @@ extern keymap_config_t keymap_config;
 #define WINPASTE ACTION_MODS_KEY(MOD_LCTL, KC_V)
 #define MACCOPY ACTION_MODS_KEY(MOD_LGUI, KC_C)
 #define MACPASTE ACTION_MODS_KEY(MOD_LGUI, KC_V)
-
-#define SPTLGHT (KC_SPC | QK_LGUI)
-#define MISSIONCTL (KC_UP | QK_LCTL)
-#define NEXTAPP (KC_TAB | QK_LGUI)
-#define PREVAPP (KC_TAB | QK_LGUI | QK_LSFT)
+#define SPTLGHT ACTION_MODS_KEY(MOD_LGUI, KC_SPC)
+#define MISSIONCTL ACTION_MODS_KEY(MOD_LCTL, KC_UP)
+#define NEXTAPP ACTION_MODS_KEY(MOD_LGUI, KC_TAB)
+#define PREVAPP ACTION_MODS_KEY(MOD_LGUI | MOD_LSFT, KC_TAB)
 
 // macros
 #define MAC_COPY_PASTE 0
@@ -60,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  [   |   Z  |      |      |      |      | |      |      |      |      |   /  |   ]  |
  * | Shift| Raise|   X  |   C  |   V  |   B  | |   N  |   M  |   ,  |   .  | Lower| Shift|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |SPTLGT|      |      |      |      | BS   | | Esc  |      |      |      | Left | Right| // TODO: SPOTLIGHT
+ * |      | Left |      |      |      | BS   | | Esc  |      |      |      | Right|      |
  * |Adjust| Func | Alt  | GUI  |Space | Lower| | Raise| Enter|   (  |   )  | Func |Numpad|
  * `-----------------------------------------' `-----------------------------------------'
  */
@@ -69,8 +68,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   CTL_T(KC_ESC), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, CTL_T(KC_QUOT), \
   SFT_T(KC_LBRC), LT(_RAISE, KC_Z), KC_X, KC_C, KC_V, KC_B, \
   KC_N, KC_M, KC_COMM, KC_DOT, LT(_LOWER, KC_SLSH), SFT_T(KC_RBRC), \
-  ADJUST, FUNCT, KC_LALT, KC_LGUI, KC_SPC, LT(_LOWER, KC_BSPC), \
-  LT(_RAISE, KC_ESC), KC_ENT, KC_LPRN, KC_RPRN, LT(_FUNCT, KC_LEFT), LT(_NUMPAD, KC_RGHT) \
+  TT(_ADJUST), LT(_FUNCT, KC_LEFT), KC_LALT, KC_LGUI, KC_SPC, LT(_LOWER, KC_BSPC), \
+  LT(_RAISE, KC_ESC), KC_ENT, KC_LPRN, KC_RPRN, LT(_FUNCT, KC_RGHT), TT(_NUMPAD) \
 ),
 
 /* Lower
