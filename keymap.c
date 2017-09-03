@@ -56,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------. ,-----------------------------------------.
  * | Tab  |   Q  |   W  |   E  |   R  |   T  | |   Y  |   U  |   I  |   O  |   P  |  \   |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * | Esc  |      |      |      |      |      | |      |      |      |      |      |  "   |
+ * |      |      |      |      |      |      | |      |      |      |      |      |  "   |
  * | Ctrl |   A  |   S  |   D  |   F  |   G  | |   H  |   J  |   K  |   L  |   ;  | Ctrl |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |  [   |   Z  |      |      |      |      | |      |      |      |      |   /  |   ]  |
@@ -68,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_QWERTY] = KEYMAP( \
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS, \
-  CTL_T(KC_ESC), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, CTL_T(KC_QUOT), \
+  KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, CTL_T(KC_QUOT), \
   SFT_T(KC_LBRC), LT(_RAISE, KC_Z), KC_X, KC_C, KC_V, KC_B, \
   KC_N, KC_M, KC_COMM, KC_DOT, LT(_LOWER, KC_SLSH), SFT_T(KC_RBRC), \
   TT(_ADJUST), LT(_FUNCT, KC_LEFT), KC_LALT, KC_LGUI, KC_SPC, LT(_LOWER, KC_BSPC), \
@@ -115,9 +115,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------. ,-----------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  | |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |M C/P |M COPY|MPASTE|SPTLGT| |MSNCTL|      |DMPLY1|DMREC1|DMSTOP|      |
+ * |      |      |M C/P |M COPY|MPASTE|SPTLGT| |MSNCTL|DMPLY1|DMREC1|DMSTOP|      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |W C/P |W COPY|WPASTE|PREVWK| |NEXTWK|      |DMPLY2|DMREC2|      |      |
+ * |      |      |W C/P |W COPY|WPASTE|PREVWK| |NEXTWK|DMPLY2|DMREC2|      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |      |      | |      |      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
@@ -125,9 +125,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_FUNCT] = KEYMAP( \
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
   _______, _______, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, SPTLGHT, \
-  MISSIONCTL, _______, DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, _______, \
+  MISSIONCTL, DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, _______, _______, \
   _______, _______, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, PREVWKS, \
-  NEXTWKS, _______, DYN_MACRO_PLAY2, DYN_REC_START2, _______, _______, \
+  NEXTWKS, DYN_MACRO_PLAY2, DYN_REC_START2, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 
