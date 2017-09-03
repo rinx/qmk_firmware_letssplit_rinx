@@ -3,6 +3,7 @@
 #include "eeconfig.h"
 
 extern keymap_config_t keymap_config;
+extern rgblight_config_t rgblight_config;
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -241,15 +242,15 @@ void matrix_scan_user(void) {
             break;
         case _FUNCT:
             rgblight_mode(0);
-            rgblight_setrgb(0xff,0xff,0xff);
+            rgblight_setrgb(rgblight_config.val,rgblight_config.val,rgblight_config.val);
             break;
         case _NUMPAD:
             rgblight_mode(0);
-            rgblight_setrgb(0x00,0xff,0xff);
+            rgblight_setrgb(0x00,rgblight_config.val,rgblight_config.val);
             break;
         case _ADJUST:
             rgblight_mode(0);
-            rgblight_setrgb(0x00,0xff,0x00);
+            rgblight_setrgb(0x00,rgblight_config.val,0x00);
             break;
         case _ADMINI:
             rgblight_mode(15);
