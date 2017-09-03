@@ -249,7 +249,7 @@ void matrix_scan_user(void) {
             break;
         case _ADJUST:
             rgblight_mode(0);
-            rgblight_setrgb(0xff,0xff,0x00);
+            rgblight_setrgb(0x00,0xff,0x00);
             break;
         case _ADMINI:
             rgblight_mode(15);
