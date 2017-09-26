@@ -26,6 +26,7 @@ extern rgblight_config_t rgblight_config;
 #define PREVTAB ACTION_MODS_KEY(MOD_LGUI, KC_LCBR)
 #define WINCOPY ACTION_MODS_KEY(MOD_LCTL, KC_C)
 #define WINPASTE ACTION_MODS_KEY(MOD_LCTL, KC_V)
+#define MACUNDO ACTION_MODS_KEY(MOD_LGUI, KC_Z)
 #define MACCUT ACTION_MODS_KEY(MOD_LGUI, KC_X)
 #define MACCOPY ACTION_MODS_KEY(MOD_LGUI, KC_C)
 #define MACPASTE ACTION_MODS_KEY(MOD_LGUI, KC_V)
@@ -38,6 +39,11 @@ extern rgblight_config_t rgblight_config;
 // macros
 #define MAC_COPY_PASTE 0
 #define WIN_COPY_PASTE 1
+
+// TAP DANCE
+enum {
+    TD_CTL_SPL = 0
+};
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -58,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------. ,-----------------------------------------.
  * | Tab  |   Q  |   W  |   E  |   R  |   T  | |   Y  |   U  |   I  |   O  |   P  |  \   |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |      |      |      |      | |      |      |      |      |      |  "   |
+ * |TD_SPL|      |      |      |      |      | |      |      |      |      |      |  "   |
  * | Ctrl |   A  |   S  |   D  |   F  |   G  | |   H  |   J  |   K  |   L  |   ;  | Ctrl |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |  [   |   Z  |      |      |      |      | |      |      |      |      |   /  |   ]  |
@@ -70,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_QWERTY] = KEYMAP( \
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS, \
-  KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, CTL_T(KC_QUOT), \
+  TD(TD_CTL_SPL), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, CTL_T(KC_QUOT), \
   SFT_T(KC_LBRC), LT(_RAISE, KC_Z), KC_X, KC_C, KC_V, KC_B, \
   KC_N, KC_M, KC_COMM, KC_DOT, LT(_LOWER, KC_SLSH), SFT_T(KC_RBRC), \
   TT(_ADJUST), LT(_FUNCT, KC_LEFT), KC_LALT, KC_LGUI, KC_SPC, LT(_LOWER, KC_BSPC), \
@@ -83,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |M FIND|      | |      |   _  |   +  |   {  |   }  | Del  |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |M CUT |M COPY|MPASTE|      | |      |      |      |      |      |      |
+ * |      |M UNDO|M CUT |M COPY|MPASTE|      | |      |      |      |      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |      |      | |      |      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
@@ -91,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_LOWER] = KEYMAP( \
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC, \
   _______, _______, _______, _______, MACFIND, _______, _______, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_DEL, \
-  _______, _______, MACCUT,  MACCOPY, MACPASTE, _______, _______, _______, _______, _______, _______, _______, \
+  _______, MACUNDO, MACCUT,  MACCOPY, MACPASTE, _______, _______, _______, _______, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 
@@ -262,6 +268,11 @@ void matrix_scan_user(void) {
             break;
     }
 
+};
+
+//Tap Dance Definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+  [TD_CTL_SPL]  = ACTION_TAP_DANCE_DOUBLE(KC_LCTL, SPTLGHT)
 };
 
 void persistent_default_layer_set(uint16_t default_layer) {
