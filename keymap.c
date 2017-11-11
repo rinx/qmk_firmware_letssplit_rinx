@@ -37,8 +37,9 @@ extern rgblight_config_t rgblight_config;
 #define PREVAPP ACTION_MODS_KEY(MOD_LGUI | MOD_LSFT, KC_TAB)
 
 // macros
-#define MAC_COPY_PASTE 0
-#define WIN_COPY_PASTE 1
+#define SEND_KEYMAP_URI 0
+#define MAC_COPY_PASTE 1
+#define WIN_COPY_PASTE 2
 
 // TAP DANCE
 enum {
@@ -125,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |M C/P |M COPY|MPASTE|SPTLGT| |MSNCTL|DMPLY1|DMREC1|DMSTOP|      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |W C/P |W COPY|WPASTE|PREVWK| |NEXTWK|DMPLY2|DMREC2|      |      |      |
+ * |      |      |W C/P |W COPY|WPASTE|PREVWK| |NEXTWK|DMPLY2|DMREC2|KEYMAP|      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |      |      | |      |      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
@@ -135,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, SPTLGHT, \
   MISSIONCTL, DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, _______, _______, \
   _______, _______, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, PREVWKS, \
-  NEXTWKS, DYN_MACRO_PLAY2, DYN_REC_START2, _______, _______, _______, \
+  NEXTWKS, DYN_MACRO_PLAY2, DYN_REC_START2, M(SEND_KEYMAP_URI), _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 
@@ -209,6 +210,11 @@ static uint16_t start;
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
     switch(id) {
+        case SEND_KEYMAP_URI:
+            if (record->event.pressed) {
+                SEND_STRING("https://github.com/rinx/qmk_firmware_letssplit_rinx/blob/master/keymap.c");
+            }
+            break;
         case MAC_COPY_PASTE:
             if (record->event.pressed) {
                 start = timer_read();
