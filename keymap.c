@@ -256,11 +256,11 @@ void matrix_scan_user(void) {
             break;
         case _FUNCT:
             rgblight_mode(0);
-            rgblight_setrgb(rgblight_config.val,rgblight_config.val,rgblight_config.val);
+            rgblight_setrgb(0x00,0x00,rgblight_config.val);
             break;
         case _NUMPAD:
             rgblight_mode(0);
-            rgblight_setrgb(0x00,rgblight_config.val,rgblight_config.val);
+            rgblight_setrgb(0x00,rgblight_config.val / 2,rgblight_config.val / 2);
             break;
         case _ADJUST:
             rgblight_mode(0);
@@ -270,7 +270,7 @@ void matrix_scan_user(void) {
             rgblight_mode(15);
             break;
         default:
-            rgblight_mode(6);
+            rgblight_mode(3);
             break;
     }
 
