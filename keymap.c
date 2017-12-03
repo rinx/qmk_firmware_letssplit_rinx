@@ -36,6 +36,18 @@ extern rgblight_config_t rgblight_config;
 #define NEXTAPP ACTION_MODS_KEY(MOD_LGUI, KC_TAB)
 #define PREVAPP ACTION_MODS_KEY(MOD_LGUI | MOD_LSFT, KC_TAB)
 
+#define IDEA_O ACTION_MODS_KEY(MOD_LGUI | MOD_LSFT, KC_O)
+#define IDEA_F ACTION_MODS_KEY(MOD_LGUI | MOD_LSFT, KC_F)
+#define IDEA_R ACTION_MODS_KEY(MOD_LGUI | MOD_LSFT, KC_R)
+#define IDEA_A ACTION_MODS_KEY(MOD_LGUI | MOD_LSFT, KC_A)
+#define IDEA_BARF_BACK ACTION_MODS_KEY(MOD_LGUI |MOD_LCTL, KC_K)
+#define IDEA_BARF_FORW ACTION_MODS_KEY(MOD_LGUI |MOD_LSFT, KC_J)
+#define IDEA_SLURP_BACK ACTION_MODS_KEY(MOD_LGUI |MOD_LCTL, KC_J)
+#define IDEA_SLURP_FORW ACTION_MODS_KEY(MOD_LGUI |MOD_LSFT, KC_K)
+#define IDEA_CURSV_EVAL ACTION_MODS_KEY(MOD_LCTL |MOD_LSFT, KC_E)
+#define IDEA_CURSV_LOAD ACTION_MODS_KEY(MOD_LCTL |MOD_LSFT, KC_M)
+#define IDEA_CURSV_CHNS ACTION_MODS_KEY(MOD_LCTL |MOD_LSFT, KC_N)
+
 // macros
 #define SEND_KEYMAP_URI 0
 #define MAC_COPY_PASTE 1
@@ -124,19 +136,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------. ,-----------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  | |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |M C/P |M COPY|MPASTE|SPTLGT| |MSNCTL|DMPLY1|DMREC1|DMSTOP|      |      |
+ * |IDEA O|IDEA R|M C/P |M COPY|MPASTE|SPTLGT| |MSNCTL|DMPLY1|DMREC1|DMSTOP|SL <-(|SL )->|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |W C/P |W COPY|WPASTE|PREVWK| |NEXTWK|DMPLY2|DMREC2|KEYMAP|      |      |
+ * |IDEA A|IDEA F|W C/P |W COPY|WPASTE|PREVWK| |NEXTWK|DMPLY2|DMREC2|KEYMAP|BF <-)|BF (->|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |      |      | |      |      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_FUNCT] = KEYMAP( \
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
-  _______, _______, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, SPTLGHT, \
-  MISSIONCTL, DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, _______, _______, \
-  _______, _______, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, PREVWKS, \
-  NEXTWKS, DYN_MACRO_PLAY2, DYN_REC_START2, M(SEND_KEYMAP_URI), _______, _______, \
+  IDEA_O, IDEA_R, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, SPTLGHT, \
+  MISSIONCTL, DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, IDEA_SLURP_BACK, IDEA_SLURP_FORW, \
+  IDEA_A, IDEA_F, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, PREVWKS, \
+  NEXTWKS, DYN_MACRO_PLAY2, DYN_REC_START2, M(SEND_KEYMAP_URI), IDEA_BARF_BACK, IDEA_BARF_FORW, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 
