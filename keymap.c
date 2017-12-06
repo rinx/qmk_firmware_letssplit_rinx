@@ -55,7 +55,9 @@ extern rgblight_config_t rgblight_config;
 
 // TAP DANCE
 enum {
-    TD_CTL_SPL = 0
+    TD_CTL_SPL = 0,
+    TD_PRN_PREVWK,
+    TD_PRN_NEXTWK
 };
 
 enum custom_keycodes {
@@ -83,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  [   |   Z  |      |      |      |      | |      |      |      |      |   /  |   ]  |
  * | Shift| Raise|   X  |   C  |   V  |   B  | |   N  |   M  |   ,  |   .  | Lower| Shift|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      | Left |      |      |      | BS   | | Esc  |      |      |      | Right|      |
+ * |      | Left |      |      |      | BS   | | Esc  |      |TD_PWK|TD_NWK| Right|      |
  * |Adjust| Func | Alt  | GUI  |Space | Lower| | Raise| Enter|   (  |   )  | Func |Numpad|
  * `-----------------------------------------' `-----------------------------------------'
  */
@@ -93,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   SFT_T(KC_LBRC), LT(_RAISE, KC_Z), KC_X, KC_C, KC_V, KC_B, \
   KC_N, KC_M, KC_COMM, KC_DOT, LT(_LOWER, KC_SLSH), SFT_T(KC_RBRC), \
   TT(_ADJUST), LT(_FUNCT, KC_LEFT), KC_LALT, KC_LGUI, KC_SPC, LT(_LOWER, KC_BSPC), \
-  LT(_RAISE, KC_ESC), KC_ENT, KC_LPRN, KC_RPRN, LT(_FUNCT, KC_RGHT), TT(_NUMPAD) \
+  LT(_RAISE, KC_ESC), KC_ENT, TD(TD_PRN_PREVWK), TD(TD_PRN_NEXTWK), LT(_FUNCT, KC_RGHT), TT(_NUMPAD) \
 ),
 
 /* Lower
@@ -290,7 +292,9 @@ void matrix_scan_user(void) {
 
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
-  [TD_CTL_SPL]  = ACTION_TAP_DANCE_DOUBLE(KC_LCTL, SPTLGHT)
+  [TD_CTL_SPL] = ACTION_TAP_DANCE_DOUBLE(KC_LCTL, SPTLGHT),
+  [TD_PRN_PREVWK] = ACTION_TAP_DANCE_DOUBLE(KC_LPRN, PREVWKS),
+  [TD_PRN_NEXTWK] = ACTION_TAP_DANCE_DOUBLE(KC_RPRN, NEXTWKS)
 };
 
 void persistent_default_layer_set(uint16_t default_layer) {
