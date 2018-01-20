@@ -13,7 +13,7 @@ extern rgblight_config_t rgblight_config;
 #define _LOWER 1
 #define _RAISE 2
 #define _FUNCT 3
-#define _NUMPAD 4
+#define _ARROW 4
 #define _ADJUST 5
 #define _ADMINI 6
 
@@ -68,7 +68,7 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   FUNCT,
-  NUMPAD,
+  ARROW,
   ADJUST,
   ADMINI,
   DYNAMIC_MACRO_RANGE
@@ -82,23 +82,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------. ,-----------------------------------------.
  * | Tab  |   Q  |   W  |   E  |   R  |   T  | |   Y  |   U  |   I  |   O  |   P  |  \   |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |TD_SPL|      |      |      |      |      | |      |      |      |      |      |  '   |
+ * |TD_SPL|      |      |      |      |      | |      |      |      |      | Arrow|  '   |
  * | Ctrl |   A  |   S  |   D  |   F  |   G  | |   H  |   J  |   K  |   L  |   ;  | Ctrl |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |  [   |   Z  |      |      |      |      | |      |      |      |      |   /  |   ]  |
  * | Shift| Raise|   X  |   C  |   V  |   B  | |   N  |   M  |   ,  |   .  | Lower| Shift|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      | Left |      |      |      | BS   | | Esc  |      |TD_PWK|TD_NWK| Right|      |
- * |Adjust| Func | Alt  | GUI  |Space | Lower| | Raise| Enter|   (  |   )  | Func |Numpad|
+ * |Adjust| Func | Alt  | GUI  |Space | Lower| | Raise| Enter|   (  |   )  | Func | Arrow|
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_QWERTY] = KEYMAP( \
-  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS, \
-  TD(TD_CTL_SPL), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, CTL_T(KC_QUOT), \
+  KC_TAB,  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSLS, \
+  TD(TD_CTL_SPL), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, LT(_ARROW, KC_SCLN), CTL_T(KC_QUOT), \
   SFT_T(KC_LBRC), LT(_RAISE, KC_Z), KC_X, KC_C, KC_V, KC_B, \
   KC_N, KC_M, KC_COMM, KC_DOT, LT(_LOWER, KC_SLSH), SFT_T(KC_RBRC), \
   TT(_ADJUST), LT(_FUNCT, KC_LEFT), KC_LALT, KC_LGUI, KC_SPC, LT(_LOWER, KC_BSPC), \
-  LT(_RAISE, KC_ESC), KC_ENT, TD(TD_PRN_PREVWK), TD(TD_PRN_NEXTWK), LT(_FUNCT, KC_RGHT), TT(_NUMPAD) \
+  LT(_RAISE, KC_ESC), KC_ENT, TD(TD_PRN_PREVWK), TD(TD_PRN_NEXTWK), LT(_FUNCT, KC_RGHT), TT(_ARROW) \
 ),
 
 /* Lower
@@ -107,9 +107,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |M FIND|      | |      |   _  |   +  |   {  |   }  | Del  |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |M UNDO|M CUT |M COPY|MPASTE|      | |      |      |      |      |      |      |
+ * |      |M UNDO|M CUT |M COPY|MPASTE|      | |      |      |      |      |XXXXXX|      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |      |      |      |      |      |XXXXXX| |      |      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_LOWER] = KEYMAP( \
@@ -125,9 +125,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |M FIND|      | |      |   -  |   =  |   [  |   ]  | Del  |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |M CUT |M COPY|MPASTE|      | |      |      |      |      |      |      |
+ * |      |XXXXXX|M CUT |M COPY|MPASTE|      | |      |      |      |      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |      |      |      |      |      |      | |XXXXXX|      |      |      |      |      |
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_RAISE] = KEYMAP( \
@@ -145,11 +145,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |SCBRI-|W C/P |W COPY|WPASTE|PREVWK| |NEXTWK|DMPLY2|DMREC2|KEYMAP|Vol - |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |      |XXXXXX|      |      |      |      | |      |      |      |      |XXXXXX|      |
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_FUNCT] = KEYMAP( \
-  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
+  KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, \
   _______, SCR_BR_UP, M(MAC_COPY_PASTE), MACCOPY, MACPASTE, SPTLGHT, \
   MISSIONCTL, DYN_MACRO_PLAY1, DYN_REC_START1, DYN_REC_STOP, KC_VOLU, KC_MUTE, \
   _______, SCR_BR_DOWN, M(WIN_COPY_PASTE), WINCOPY, WINPASTE, PREVWKS, \
@@ -158,22 +158,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 
-/* Numpad
+/* Arrow
  * ,-----------------------------------------. ,-----------------------------------------.
- * |      |      |   7  |   8  |   9  |PREVTB| |NEXTTB|      |  Up  |      |      |      |
+ * |      |      |      |  Up  |      |      | |      |      |      |      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |   4  |   5  |   6  |SPTLGT| |MSNCTL| Left | Down |Right |      |      |
+ * |      |      | Left | Down | Right|      | | Left | Down |  Up  |Right |XXXXXX|      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |   1  |   2  |   3  |PREVWK| |NEXTWK|      |      |      |      |      |
+ * |      |      |      |      |      |      | |      |      |      |      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |ADMINI|      |   0  |   ,  |   .  |      | |      |      |      |      |      |      |
+ * |ADMINI|      |      |      |      |      | |      |      |      |      |      |XXXXXX|
  * `-----------------------------------------' `-----------------------------------------'
  */
-[_NUMPAD] =  KEYMAP( \
-  _______, _______, KC_7,    KC_8,    KC_9,    PREVTAB, NEXTTAB, _______, KC_UP,   _______, _______, _______, \
-  _______, _______, KC_4,    KC_5,    KC_6,    SPTLGHT, MISSIONCTL, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, \
-  _______, _______, KC_1,    KC_2,    KC_3,    PREVWKS, NEXTWKS, _______, _______, _______, _______, _______, \
-  ADMINI,   _______, KC_0,    KC_COMM, KC_DOT,  _______, _______, _______, _______, _______, _______, _______ \
+[_ARROW] =  KEYMAP( \
+  _______, _______, _______, KC_UP, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  ADMINI, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 
 
@@ -185,7 +185,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |      |      |      |      |      |PREVWK| |NEXTWK|      |      |      |      |      |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |      |      | Lclk | Rclk | | Lclk | Rclk |      |      |      |ADMINI|
+ * |XXXXXX|      |      |      | Lclk | Rclk | | Lclk | Rclk |      |      |      |ADMINI|
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_ADJUST] =  KEYMAP( \
@@ -203,7 +203,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |RGB h-|RGB h+|      |      |      |      | |      |      |      |      |RGB s-|RGB s+|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |XXXXXX|      |      |      |      |      | |      |      |      |      |      |XXXXXX|
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_ADMINI] =  KEYMAP( \
@@ -219,7 +219,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM fn_actions[] = {
     [1] = ACTION_LAYER_TAP_TOGGLE(_FUNCT),
-    [2] = ACTION_LAYER_TAP_TOGGLE(_NUMPAD),
+    [2] = ACTION_LAYER_TAP_TOGGLE(_ARROW),
     [3] = ACTION_LAYER_TAP_TOGGLE(_ADJUST),
 };
 
@@ -275,7 +275,7 @@ void matrix_scan_user(void) {
             rgblight_mode(0);
             rgblight_setrgb(0x00,0x00,rgblight_config.val);
             break;
-        case _NUMPAD:
+        case _ARROW:
             rgblight_mode(0);
             rgblight_setrgb(0x00,rgblight_config.val / 2,rgblight_config.val / 2);
             break;
@@ -342,11 +342,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case NUMPAD:
+    case ARROW:
       if (record->event.pressed) {
-        layer_on(_NUMPAD);
+        layer_on(_ARROW);
       } else {
-        layer_off(_NUMPAD);
+        layer_off(_ARROW);
       }
       return false;
       break;
