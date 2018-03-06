@@ -88,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  [   |   Z  |      |      |      |      | |      |      |      |      |   /  |   ]  |
  * | Shift| Raise|   X  |   C  |   V  |   B  | |   N  |   M  |   ,  |   .  | Lower| Shift|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
- * |      | Left |      |      |      | BS   | | Esc  |      |TD_PWK|TD_NWK| Right|      |
+ * | Left | Right|      |      |      | BS   | | Esc  |      |TD_PWK|TD_NWK| Down |  Up  |
  * |Adjust| Func | Alt  | GUI  |Space | Lower| | Raise| Enter|   (  |   )  | Func | Arrow|
  * `-----------------------------------------' `-----------------------------------------'
  */
@@ -97,8 +97,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   TD(TD_CTL_SPL), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, LT(_ARROW, KC_SCLN), CTL_T(KC_QUOT), \
   SFT_T(KC_LBRC), LT(_RAISE, KC_Z), KC_X, KC_C, KC_V, KC_B, \
   KC_N, KC_M, KC_COMM, KC_DOT, LT(_LOWER, KC_SLSH), SFT_T(KC_RBRC), \
-  TT(_ADJUST), LT(_FUNCT, KC_LEFT), KC_LALT, KC_LGUI, KC_SPC, LT(_LOWER, KC_BSPC), \
-  LT(_RAISE, KC_ESC), KC_ENT, TD(TD_PRN_PREVWK), TD(TD_PRN_NEXTWK), LT(_FUNCT, KC_RGHT), TT(_ARROW) \
+  LT(_ADJUST, KC_LEFT), LT(_FUNCT, KC_RGHT), KC_LALT, KC_LGUI, KC_SPC, LT(_LOWER, KC_BSPC), \
+  LT(_RAISE, KC_ESC), KC_ENT, TD(TD_PRN_PREVWK), TD(TD_PRN_NEXTWK), LT(_FUNCT, KC_DOWN), LT(_ARROW, KC_UP) \
 ),
 
 /* Lower
@@ -260,34 +260,66 @@ void matrix_init_user(void) {
     rgblight_mode(6);
 };
 
+// define variables for reactive RGB
+bool TOG_STATUS = false;
+int RGB_current_mode;
+
 void matrix_scan_user(void) {
 
     uint8_t layer = biton32(layer_state);
 
     switch (layer) {
         case _LOWER:
-            rgblight_mode(31);
+            if (TOG_STATUS) {
+            } else {
+                RGB_current_mode = rgblight_config.mode;
+                TOG_STATUS = true;
+                rgblight_mode(31);
+            }
             break;
         case _RAISE:
-            rgblight_mode(32);
+            if (TOG_STATUS) {
+            } else {
+                RGB_current_mode = rgblight_config.mode;
+                TOG_STATUS = true;
+                rgblight_mode(32);
+            }
             break;
         case _FUNCT:
-            rgblight_mode(0);
-            rgblight_setrgb(0x00,0x00,rgblight_config.val);
+            if (TOG_STATUS) {
+            } else {
+                RGB_current_mode = rgblight_config.mode;
+                TOG_STATUS = true;
+                // rgblight_mode(0);
+            }
             break;
         case _ARROW:
-            rgblight_mode(0);
-            rgblight_setrgb(0x00,rgblight_config.val / 2,rgblight_config.val / 2);
+            if (TOG_STATUS) {
+            } else {
+                RGB_current_mode = rgblight_config.mode;
+                TOG_STATUS = true;
+                rgblight_mode(15);
+            }
             break;
         case _ADJUST:
-            rgblight_mode(0);
-            rgblight_setrgb(0x00,rgblight_config.val,0x00);
+            if (TOG_STATUS) {
+            } else {
+                RGB_current_mode = rgblight_config.mode;
+                TOG_STATUS = true;
+                // rgblight_mode(15);
+            }
             break;
         case _ADMINI:
-            rgblight_mode(15);
+            if (TOG_STATUS) {
+            } else {
+                RGB_current_mode = rgblight_config.mode;
+                TOG_STATUS = true;
+                rgblight_mode(20);
+            }
             break;
         default:
-            rgblight_mode(3);
+            TOG_STATUS = false;
+            rgblight_mode(RGB_current_mode);
             break;
     }
 
