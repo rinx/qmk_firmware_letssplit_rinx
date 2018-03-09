@@ -16,6 +16,10 @@ extern rgblight_config_t rgblight_config;
 #define _ARROW 4
 #define _ADJUST 5
 #define _ADMINI 6
+#define _FROGLK 7
+#define _FROGOP 8
+#define _FROGNM 9
+#define _FROGSM 10
 
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -71,6 +75,10 @@ enum custom_keycodes {
   ARROW,
   ADJUST,
   ADMINI,
+  FROGLK,
+  FROGOP,
+  FROGNM,
+  FROGSM,
   DYNAMIC_MACRO_RANGE
 };
 
@@ -197,7 +205,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* administrator
  * ,-----------------------------------------. ,-----------------------------------------.
- * |RESET |      |      |      |      |      | |      |      |      |      |      |POWER |
+ * |RESET |      |      |      |      |FROGLK| |FROGLK|      |      |      |      |POWER |
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
  * |RGB on|RGBmod|      |      |      |      | |      |      |      |      |RGB v-|RGB v+|
  * |------+------+------+------+------+------| |------+------+------+------+------+------|
@@ -207,13 +215,89 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------' `-----------------------------------------'
  */
 [_ADMINI] =  KEYMAP( \
-  RESET, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_POWER, \
+  RESET, _______, _______, _______, _______, FROGLK, FROGLK, _______, _______, _______, _______, KC_POWER, \
   RGB_TOG, RGB_MOD, _______, _______, _______, _______, _______, _______, _______, _______, RGB_VAD, RGB_VAI, \
   RGB_HUD, RGB_HUI, _______, _______, _______, _______, _______, _______, _______, _______, RGB_SAD, RGB_SAI, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
+),
+
+
+/* Frogpad-like
+ * ,-----------------------------------------. ,-----------------------------------------.
+ * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |   P  |   W  |   R  |   A  |   F  |QWERTY| |QWERTY|   F  |   A  |   R  |   W  |   P  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |   D  |   T  |   H  |   E  |   O  |  Esc | |  Esc |   O  |   E  |   H  |   T  |   D  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |      |      |      |      |      | |      |      |      |      |      |      |
+ * |   Y  |   S  |   N  |   I  |   U  | Shift| | Shift|   U  |   I  |   N  |   S  |   Y  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |      |      |  SYM |  NUM |  OPT | |  OPT |  NUM |  SYM |      |      |      |
+ * | Ctrl |  Alt | GUI  | Enter| Space|  BS  | |  BS  | Space| Enter|  GUI |  Alt | Ctrl |
+ * `-----------------------------------------' `-----------------------------------------'
+ */
+[_FROGLK] = KEYMAP( \
+  KC_P, KC_W, KC_R, KC_A, KC_F, QWERTY, QWERTY, KC_F, KC_A, KC_R, KC_W, KC_P, \
+  KC_D, KC_T, KC_H, KC_E, KC_O, KC_ESC, KC_ESC, KC_O, KC_E, KC_H, KC_T, KC_D, \
+  KC_Y, KC_S, KC_N, KC_I, KC_U, KC_LSFT, KC_LSFT, KC_U, KC_I, KC_N, KC_S, KC_Y, \
+  KC_LCTL, KC_LALT, KC_LGUI, LT(_FROGSM, KC_ENT), LT(_FROGNM, KC_SPC), LT(_FROGOP, KC_BSPC), \
+  LT(_FROGOP, KC_BSPC), LT(_FROGNM, KC_SPC), LT(_FROGSM, KC_ENT), KC_LGUI, KC_LALT, KC_LCTL \
+),
+
+/* Frogpad-opt
+ * ,-----------------------------------------. ,-----------------------------------------.
+ * |   J  |   M  |   B  |   '  |  Tab |   ,  | |   ,  |  Tab |   '  |   B  |   M  |   J  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |   V  |   C  |   L  |   Z  |   Q  |   .  | |   .  |   Q  |   Z  |   L  |   C  |   V  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |   X  |   G  |   K  |   -  |  Del |      | |      |  Del |   -  |   K  |   G  |   X  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |      |      |      |      |XXXXXX| |XXXXXX|      |      |      |      |      |
+ * `-----------------------------------------' `-----------------------------------------'
+ */
+[_FROGOP] = KEYMAP( \
+  KC_J, KC_M, KC_B, KC_QUOT, KC_TAB, KC_COMM, KC_COMM, KC_TAB, KC_QUOT, KC_B, KC_M, KC_J, \
+  KC_V, KC_C, KC_L, KC_Z, KC_Q, KC_DOT, KC_DOT, KC_Q, KC_Z, KC_L, KC_C, KC_V, \
+  KC_X, KC_G, KC_K, KC_MINS, KC_DEL, _______, _______, KC_DEL, KC_MINS, KC_K, KC_G, KC_X, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
+),
+
+/* Frogpad-num
+ * ,-----------------------------------------. ,-----------------------------------------.
+ * |   +  |   7  |   8  |   9  |   [  |   ]  | |   [  |   ]  |   +  |   7  |   8  |   9  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |   =  |   4  |   5  |   6  |   (  |   )  | |   (  |   )  |   =  |   4  |   5  |   6  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |   0  |   1  |   2  |   3  |   <  |   >  | |   <  |   >  |   0  |   1  |   2  |   3  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |      |      |      |      |XXXXXX|      | |      |XXXXXX|      |      |      |      |
+ * `-----------------------------------------' `-----------------------------------------'
+ */
+[_FROGNM] = KEYMAP( \
+  KC_PLUS, KC_7, KC_8, KC_9, KC_LBRC, KC_RBRC, KC_LBRC, KC_RBRC, KC_PLUS, KC_7, KC_8, KC_9, \
+  KC_EQL, KC_4, KC_5, KC_6, KC_LPRN, KC_RPRN, KC_LPRN, KC_RPRN, KC_EQL, KC_4, KC_5, KC_6, \
+  KC_0, KC_1, KC_2, KC_3, KC_LT, KC_GT, KC_LT, KC_GT, KC_0, KC_1, KC_2, KC_3, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
+),
+
+/* Frogpad-sym
+ * ,-----------------------------------------. ,-----------------------------------------.
+ * |   /  |   &  |   *  |   \  |   {  |   }  | |   {  |   }  |   /  |   &  |   *  |   \  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |   ?  |   $  |   %  |   ^  |   |  |   `  | |   |  |   `  |   ?  |   $  |   %  |   ^  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * |   !  |  Up  |   @  |   #  |   _  |   ~  | |   _  |   ~  |   !  |   @  |  Up  |   #  |
+ * |------+------+------+------+------+------| |------+------+------+------+------+------|
+ * | Left | Down | Right|XXXXXX|      |      | |      |      |XXXXXX| Left | Down | Right|
+ * `-----------------------------------------' `-----------------------------------------'
+ */
+[_FROGSM] = KEYMAP( \
+  KC_SLSH, KC_AMPR, KC_ASTR, KC_BSLS, KC_LCBR, KC_RCBR, KC_LCBR, KC_RCBR, KC_SLSH, KC_AMPR, KC_ASTR, KC_BSLS, \
+  KC_QUES, KC_DLR,  KC_PERC, KC_CIRC, KC_PIPE, KC_GRV,  KC_PIPE, KC_GRV,  KC_QUES, KC_DLR,  KC_PERC, KC_CIRC, \
+  KC_EXLM, KC_UP,   KC_AT,   KC_HASH, KC_UNDS, KC_TILD, KC_UNDS, KC_TILD, KC_EXLM, KC_AT,   KC_UP,   KC_HASH, \
+  KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT \
 )
-
-
 
 };
 
@@ -395,6 +479,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_on(_ADMINI);
       } else {
         layer_off(_ADMINI);
+      }
+      return false;
+      break;
+    case FROGLK:
+      if (record->event.pressed) {
+        persistent_default_layer_set(1UL<<_FROGLK);
       }
       return false;
       break;
